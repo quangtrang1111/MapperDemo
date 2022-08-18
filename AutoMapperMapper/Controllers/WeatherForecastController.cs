@@ -18,19 +18,19 @@ namespace AutoMapperMapper.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IMapper _mapper;
-        private readonly IWeatherForecastService _service;
+        private readonly ILocationService _locationService;
 
         public WeatherForecastController(
             ILogger<WeatherForecastController> logger,
             IMapper mapper,
-            IWeatherForecastService service)
+            ILocationService service)
         {
             _logger = logger;
-            _service = service;
+            _locationService = service;
             _mapper = mapper;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet("GetWeatherForecast")]
         public IEnumerable<WeatherForecastModel> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecastModel
@@ -42,15 +42,34 @@ namespace AutoMapperMapper.Controllers
             .ToArray();
         }
 
-        [HttpPost()]
+        [HttpPost("Create")]
         public WeatherForecastDto Create([FromBody] CreateWeatherForecast request)
         {
             // Map one Model to a DTO
             var model = _mapper.Map<WeatherForecastModel>(request);
-            var created = _service.CreateWeatherForecast(model);
 
             // Map one property of a Model to a different property in the DTO
-            var dto = _mapper.Map<WeatherForecastDto>(created);
+            var dto = _mapper.Map<WeatherForecastDto>(model);
+
+            return dto;
+        }
+
+        [HttpPost("CreateWithLocation")]
+        public async Task<WeatherForecastDto> CreateWithLocation([FromBody] CreateWeatherForecast request)
+        {
+            // Map one Model to a DTO
+            var model = _mapper.Map<WeatherForecastModel>(request);
+
+            var location = await _locationService.GetByIdAsync(model.LocationId);
+
+            // Map one property of a Model to a different property in the DTO
+            var dto = _mapper.Map<WeatherForecastModel, WeatherForecastDto>(model, opt =>
+            {
+                opt.AfterMap((WeatherForecastModel src, WeatherForecastDto dest) =>
+                {
+                    dest.Location = _mapper.Map<LocationDto>(location);
+                });
+            });
 
             return dto;
         }

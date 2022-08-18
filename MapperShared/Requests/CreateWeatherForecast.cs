@@ -11,5 +11,7 @@ namespace MapperShared.Requests
         public int TemperatureC { get; set; }
 
         public string? Summary { get; set; }
+
+        public int LocationId { get; set; }
     }
 }

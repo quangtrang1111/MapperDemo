@@ -11,5 +11,7 @@ namespace MapperShared.DTOs
         public int TemperatureF { get; set; }
 
         public string? Summary { get; set; }
+
+        public LocationDto? Location { get; set; }
     }
 }

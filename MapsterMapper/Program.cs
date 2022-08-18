@@ -2,7 +2,6 @@ using MapperShared.DTOs;
 using MapperShared.Models;
 using MapperShared.Services;
 using Mapster;
-using MapsterMapper.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 SetupMapperConfig();
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 var app = builder.Build();
 

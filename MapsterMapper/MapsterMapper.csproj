@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MapperShared\MapperShared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

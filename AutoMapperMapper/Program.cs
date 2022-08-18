@@ -1,5 +1,4 @@
 using AutoMapperMapper;
-using AutoMapperMapper.Services;
 using MapperShared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 var app = builder.Build();
 
